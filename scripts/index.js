@@ -1,4 +1,4 @@
-console.log("index is connected");
+// console.log("index is connected");
 
 function loadCategories() {
     
