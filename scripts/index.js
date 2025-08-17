@@ -1,5 +1,13 @@
 // console.log("index is connected");
 
+function removeActiveClass() {
+  const activeButtons = document.getElementsByClassName("active");
+
+  for (let btn of activeButtons) {
+    btn.classList.remove("active");
+  }
+}
+
 function loadCategories() {
     
     fetch("https://openapi.programming-hero.com/api/phero-tube/categories")
@@ -21,6 +29,7 @@ const loadCategoryVideos = (id) => {
   fetch(url)
   .then(res => res.json())
   .then(data => {
+    removeActiveClass();
     const clickedBtn = document.getElementById(`btn-${id}`);
     clickedBtn.classList.add("active")
     // console.log(clickedBtn);
