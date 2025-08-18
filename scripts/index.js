@@ -19,7 +19,11 @@ function loadCategories() {
 function loadVideos() {
     fetch("https://openapi.programming-hero.com/api/phero-tube/videos")
     .then((res) => res.json())
-    .then((data) => displayVideos(data.videos))
+    .then((data) => {
+       removeActiveClass();
+       document.getElementById("btn-all").classList.add("active");
+      displayVideos(data.videos)
+    })
 }
 
 const loadCategoryVideos = (id) => {
@@ -29,7 +33,7 @@ const loadCategoryVideos = (id) => {
   fetch(url)
   .then(res => res.json())
   .then(data => {
-    removeActiveClass();
+  
     const clickedBtn = document.getElementById(`btn-${id}`);
     clickedBtn.classList.add("active")
     // console.log(clickedBtn);
@@ -52,6 +56,41 @@ function displayCategories(categories) {
      }
 
 }
+
+const loadVideoDetails=(videoId)=>{
+  // console.log(videoId)
+  const url = "https://openapi.programming-hero.com/api/phero-tube/video/${videoId}";
+  fetch(url)
+  .then((res) => res.json())
+  .then((data) => displayVideoDetails(data.video))
+}
+
+const displayVideoDetails = (video) => {
+
+// console.log(video);
+document.getElementById("video_Details").showModal();
+const detailsContainer = document.getElementById("details-container");
+
+detailsContainer.innerHTML = `
+ <div class="card bg-base-100 image-full shadow-sm">
+  <figure>
+    <img
+      src="${video.thumbnail}">
+  </figure>
+  <div class="card-body">
+    <h2 class="card-title">Card Title</h2>
+    <p>A card component has a figure, a body part, and inside body there are title and actions parts</p>
+    <div class="card-actions justify-end">
+      <button class="btn btn-primary">Buy Now</button>
+    </div>
+  </div>
+</div>
+
+`;
+
+}
+
+
 
 const displayVideos = (videos) => {
     
@@ -96,6 +135,7 @@ videoContainer.innerHTML = `
       <p class="text-sm text-gray-400 flex gap-1">${video.authors[0].profile_name}<img class="w-5 h-5" src="https://img.icons8.com/?size=48&id=102561&format=png" alt=""></p>
       <p class="text-sm text-gray-400">${video.others.views}</p>
     </div>
+    <button onclick= loadVideoDetails("${video.video_id}") class="btn btn-block">Show Details</button>
   </div>
          `;
 
